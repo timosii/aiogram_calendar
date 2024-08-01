@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.types import CallbackQuery
 
-from .schemas import SimpleCalendarCallback, SimpleCalAct, highlight, superscript
+from .schemas import SimpleCalendarCallback, SimpleCalAct, highlight, superscript, selected
 from .common import GenericCalendar
 
 
@@ -29,7 +29,8 @@ class SimpleCalendar(GenericCalendar):
         today = datetime.now()
         now_weekday = self._labels.days_of_week[today.weekday()]
         now_month, now_year, now_day = today.month, today.year, today.day
-        selected_month, selected_year, selected_day = selected_date.month, selected_date.year, selected_date.day
+        if selected_date:
+            selected_month, selected_year, selected_day = selected_date.month, selected_date.year, selected_date.day
 
         def highlight_month():
             month_str = self._labels.months[month - 1]
@@ -52,8 +53,9 @@ class SimpleCalendar(GenericCalendar):
 
         def highlight_day():
             day_string = format_day_string()
-            if selected_month == month and selected_year == year and selected_day == day:
-                return selected(day_string)
+            if selected_date:
+                if selected_month == month and selected_year == year and selected_day == day:
+                    return selected(day_string)
             if now_month == month and now_year == year and now_day == day:
                 return highlight(day_string)
             return day_string
