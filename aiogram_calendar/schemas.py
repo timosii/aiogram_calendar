@@ -55,10 +55,14 @@ class CalendarLabels(BaseModel):
 
 
 HIGHLIGHT_FORMAT = "[{}]"
+SELECTED_FORMAT = "<b>{}</b>"
 
 
 def highlight(text):
     return HIGHLIGHT_FORMAT.format(text)
+
+def selected(text):
+    return SELECTED_FORMAT.format(text)
 
 
 def superscript(text):
