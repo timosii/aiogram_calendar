@@ -11,9 +11,7 @@ from .common import GenericCalendar
 
 class SimpleCalendar(GenericCalendar):
     ignore_callback = SimpleCalendarCallback(act=SimpleCalAct.ignore).pack()  # placeholder for no answer buttons
-    
-    def __init__(self, locale: str = None, cancel_btn: str = None, today_btn: str = None, show_alerts: bool = False, selected_date: Optional[datetime] = None) -> None:
-        super().__init__(locale, cancel_btn, today_btn, show_alerts)
+    def __init__(self, selected_date: Optional[datetime] = None):
         self.selected_date = selected_date
 
     async def start_calendar(
@@ -136,9 +134,9 @@ class SimpleCalendar(GenericCalendar):
         kb.append(cancel_row)
         return InlineKeyboardMarkup(row_width=7, inline_keyboard=kb)
 
-    async def _update_calendar(self, query: CallbackQuery, with_date: datetime):
+    async def _update_calendar(self, query: CallbackQuery, with_date: datetime, selected_date: Optional[datetime] = None):
         await query.message.edit_reply_markup(
-            reply_markup=await self.start_calendar(selected_date=self.selected_date, year=int(with_date.year), month=int(with_date.month))
+            reply_markup=await self.start_calendar(selected_date=selected_date, year=int(with_date.year), month=int(with_date.month))
         )
 
     async def process_selection(self, query: CallbackQuery, data: SimpleCalendarCallback) -> tuple:
@@ -151,6 +149,7 @@ class SimpleCalendar(GenericCalendar):
                     and returning the date if so.
         """
         return_data = (False, None)
+        selected_date: Optional[datetime] = self.selected_date
 
         # processing empty buttons, answering with no action
         if data.act == SimpleCalAct.ignore:
@@ -166,23 +165,23 @@ class SimpleCalendar(GenericCalendar):
         # user navigates to previous year, editing message with new calendar
         if data.act == SimpleCalAct.prev_y:
             prev_date = datetime(int(data.year) - 1, int(data.month), 1)
-            await self._update_calendar(query, prev_date)
+            await self._update_calendar(query, prev_date, selected_date=selected_date)
         # user navigates to next year, editing message with new calendar
         if data.act == SimpleCalAct.next_y:
             next_date = datetime(int(data.year) + 1, int(data.month), 1)
-            await self._update_calendar(query, next_date)
+            await self._update_calendar(query, next_date, selected_date=selected_date)
         # user navigates to previous month, editing message with new calendar
         if data.act == SimpleCalAct.prev_m:
             prev_date = temp_date - timedelta(days=1)
-            await self._update_calendar(query, prev_date)
+            await self._update_calendar(query, prev_date, selected_date=selected_date)
         # user navigates to next month, editing message with new calendar
         if data.act == SimpleCalAct.next_m:
             next_date = temp_date + timedelta(days=31)
-            await self._update_calendar(query, next_date)
+            await self._update_calendar(query, next_date, selected_date=selected_date)
         if data.act == SimpleCalAct.today:
             next_date = datetime.now()
             if next_date.year != int(data.year) or next_date.month != int(data.month):
-                await self._update_calendar(query, datetime.now())
+                await self._update_calendar(query, datetime.now(), selected_date=selected_date)
             else:
                 await query.answer(cache_time=60)
         if data.act == SimpleCalAct.cancel:
