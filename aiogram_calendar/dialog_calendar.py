@@ -189,7 +189,6 @@ class DialogCalendar(GenericCalendar):
         if data.act == DialogCalAct.set_m:
             await query.message.edit_reply_markup(reply_markup=await self._get_days_kb(int(data.year), int(data.month)))
         if data.act == DialogCalAct.day:
-
             return await self.process_day_select(data, query)
 
         if data.act == DialogCalAct.cancel:
