@@ -5,6 +5,5 @@ setup(
     version="0.5.0",
     packages=find_packages(),
     install_requires=[
-        # Ваши зависимости
     ],
 )
