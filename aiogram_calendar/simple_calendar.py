@@ -138,7 +138,7 @@ class SimpleCalendar(GenericCalendar):
 
     async def _update_calendar(self, query: CallbackQuery, with_date: datetime):
         await query.message.edit_reply_markup(
-            reply_markup=await self.start_calendar(selected_date=self.selected_date, year=int(with_date.year), month=int(with_date.month))
+            reply_markup=await self.start_calendar(year=int(with_date.year), month=int(with_date.month))
         )
 
     async def process_selection(self, query: CallbackQuery, data: SimpleCalendarCallback) -> tuple:
