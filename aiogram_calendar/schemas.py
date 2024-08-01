@@ -45,12 +45,13 @@ class DialogCalendarCallback(CalendarCallback, prefix="dialog_calendar"):
 
 class CalendarLabels(BaseModel):
     "Schema to pass labels for calendar. Can be used to put in different languages"
-    days_of_week: conlist(str, max_length=7, min_length=7) = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"]
+    days_of_week: conlist(str, max_length=7, min_length=7) = ["Пон", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"]
     months: conlist(str, max_length=12, min_length=12) = [
-        "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+        "Янв", "Фев", "Март", "Апр", "Май", "Июнь", "Июль", "Авг", "Сент", "Окт", "Ноя", "Дек"
     ]
-    cancel_caption: str = Field(default='Cancel', description='Caprion for Cancel button')
-    today_caption: str = Field(default='Today', description='Caprion for Cancel button')
+    cancel_caption: str = Field(default='Отмена', description='Caption for Cancel button')
+    today_caption: str = Field(default='Сегодня', description='Caption for Today button')
+
 
 
 HIGHLIGHT_FORMAT = "[{}]"
