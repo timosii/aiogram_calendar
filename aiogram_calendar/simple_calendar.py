@@ -10,12 +10,15 @@ from .common import GenericCalendar
 
 
 class SimpleCalendar(GenericCalendar):
-
     ignore_callback = SimpleCalendarCallback(act=SimpleCalAct.ignore).pack()  # placeholder for no answer buttons
+    
+    def __init__(self, locale: str = None, cancel_btn: str = None, today_btn: str = None, show_alerts: bool = False, selected_date: Optional[datetime] = None) -> None:
+        super().__init__(locale, cancel_btn, today_btn, show_alerts)
+        self.selected_date = selected_date
+
 
     async def start_calendar(
         self,
-        selected_date: Optional[datetime] = None,
         year: int = datetime.now().year,
         month: int = datetime.now().month
     ) -> InlineKeyboardMarkup:
@@ -29,8 +32,8 @@ class SimpleCalendar(GenericCalendar):
         today = datetime.now()
         now_weekday = self._labels.days_of_week[today.weekday()]
         now_month, now_year, now_day = today.month, today.year, today.day
-        if selected_date:
-            selected_month, selected_year, selected_day = selected_date.month, selected_date.year, selected_date.day
+        if self.selected_date:
+            selected_month, selected_year, selected_day = self.selected_date.month, self.selected_date.year, self.selected_date.day
 
         def highlight_month():
             month_str = self._labels.months[month - 1]
@@ -53,7 +56,7 @@ class SimpleCalendar(GenericCalendar):
 
         def highlight_day():
             day_string = format_day_string()
-            if selected_date:
+            if self.selected_date:
                 if selected_month == month and selected_year == year and selected_day == day:
                     return selected(day_string)
             if now_month == month and now_year == year and now_day == day:
@@ -135,7 +138,7 @@ class SimpleCalendar(GenericCalendar):
 
     async def _update_calendar(self, query: CallbackQuery, with_date: datetime):
         await query.message.edit_reply_markup(
-            reply_markup=await self.start_calendar(int(with_date.year), int(with_date.month))
+            reply_markup=await self.start_calendar(selected_date=self.selected_date, year=int(with_date.year), month=int(with_date.month))
         )
 
     async def process_selection(self, query: CallbackQuery, data: SimpleCalendarCallback) -> tuple:
