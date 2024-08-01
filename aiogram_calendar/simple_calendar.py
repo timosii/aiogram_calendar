@@ -33,7 +33,7 @@ class SimpleCalendar(GenericCalendar):
         now_weekday = self._labels.days_of_week[today.weekday()]
         now_month, now_year, now_day = today.month, today.year, today.day
         if selected_date:
-            selected_month, selected_year, selected_day = self.selected_date.month, self.selected_date.year, self.selected_date.day
+            selected_month, selected_year, selected_day = selected_date.month, selected_date.year, selected_date.day
 
         def highlight_month():
             month_str = self._labels.months[month - 1]
