@@ -11,7 +11,9 @@ from .common import GenericCalendar
 
 class SimpleCalendar(GenericCalendar):
     ignore_callback = SimpleCalendarCallback(act=SimpleCalAct.ignore).pack()  # placeholder for no answer buttons
-    def __init__(self, selected_date: Optional[datetime] = None):
+
+    def __init__(self, locale: str = None, cancel_btn: str = None, today_btn: str = None, show_alerts: bool = False, selected_date: Optional[datetime] = None) -> None:
+        super().__init__(locale, cancel_btn, today_btn, show_alerts)
         self.selected_date = selected_date
 
     async def start_calendar(
