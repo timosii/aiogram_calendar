@@ -166,23 +166,23 @@ class SimpleCalendar(GenericCalendar):
         # user navigates to previous year, editing message with new calendar
         if data.act == SimpleCalAct.prev_y:
             prev_date = datetime(int(data.year) - 1, int(data.month), 1)
-            await self._update_calendar(query, prev_date, selected_date=selected_date)
+            await self._update_calendar(query, prev_date)
         # user navigates to next year, editing message with new calendar
         if data.act == SimpleCalAct.next_y:
             next_date = datetime(int(data.year) + 1, int(data.month), 1)
-            await self._update_calendar(query, next_date, selected_date=selected_date)
+            await self._update_calendar(query, next_date)
         # user navigates to previous month, editing message with new calendar
         if data.act == SimpleCalAct.prev_m:
             prev_date = temp_date - timedelta(days=1)
-            await self._update_calendar(query, prev_date, selected_date=selected_date)
+            await self._update_calendar(query, prev_date)
         # user navigates to next month, editing message with new calendar
         if data.act == SimpleCalAct.next_m:
             next_date = temp_date + timedelta(days=31)
-            await self._update_calendar(query, next_date, selected_date=selected_date)
+            await self._update_calendar(query, next_date)
         if data.act == SimpleCalAct.today:
             next_date = datetime.now()
             if next_date.year != int(data.year) or next_date.month != int(data.month):
-                await self._update_calendar(query, datetime.now(), selected_date=selected_date)
+                await self._update_calendar(query, datetime.now())
             else:
                 await query.answer(cache_time=60)
         if data.act == SimpleCalAct.cancel:
