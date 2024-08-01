@@ -18,7 +18,6 @@ class SimpleCalendar(GenericCalendar):
         self,
         year: int = datetime.now().year,
         month: int = datetime.now().month,
-        selected_date: Optional[datetime] = None,
     ) -> InlineKeyboardMarkup:
         """
         Creates an inline keyboard with the provided year and month
@@ -30,8 +29,8 @@ class SimpleCalendar(GenericCalendar):
         today = datetime.now()
         now_weekday = self._labels.days_of_week[today.weekday()]
         now_month, now_year, now_day = today.month, today.year, today.day
-        if selected_date:
-            selected_month, selected_year, selected_day = selected_date.month, selected_date.year, selected_date.day
+        if self.selected_date:
+            selected_month, selected_year, selected_day = self.selected_date.month, self.selected_date.year, self.selected_date.day
 
         def highlight_month():
             month_str = self._labels.months[month - 1]
@@ -54,7 +53,7 @@ class SimpleCalendar(GenericCalendar):
 
         def highlight_day():
             day_string = format_day_string()
-            if selected_date:
+            if self.selected_date:
                 if selected_month == month and selected_year == year and selected_day == day:
                     return selected(day_string)
             if now_month == month and now_year == year and now_day == day:
@@ -134,9 +133,9 @@ class SimpleCalendar(GenericCalendar):
         kb.append(cancel_row)
         return InlineKeyboardMarkup(row_width=7, inline_keyboard=kb)
 
-    async def _update_calendar(self, query: CallbackQuery, with_date: datetime, selected_date: Optional[datetime] = None):
+    async def _update_calendar(self, query: CallbackQuery, with_date: datetime):
         await query.message.edit_reply_markup(
-            reply_markup=await self.start_calendar(selected_date=selected_date, year=int(with_date.year), month=int(with_date.month))
+            reply_markup=await self.start_calendar(year=int(with_date.year), month=int(with_date.month))
         )
 
     async def process_selection(self, query: CallbackQuery, data: SimpleCalendarCallback) -> tuple:
