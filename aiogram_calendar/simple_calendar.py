@@ -56,7 +56,7 @@ class SimpleCalendar(GenericCalendar):
 
         def highlight_day():
             day_string = format_day_string()
-            if self.selected_date:
+            if selected_date:
                 if selected_month == month and selected_year == year and selected_day == day:
                     return selected(day_string)
             if now_month == month and now_year == year and now_day == day:
