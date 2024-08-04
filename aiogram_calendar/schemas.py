@@ -55,7 +55,7 @@ class CalendarLabels(BaseModel):
 
 
 HIGHLIGHT_FORMAT = "[{}]"
-SELECTED_FORMAT = "➡️{}➡️"
+SELECTED_FORMAT = "{}➡️"
 
 
 def highlight(text):
