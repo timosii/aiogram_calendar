@@ -49,8 +49,8 @@ class CalendarLabels(BaseModel):
     months: conlist(str, max_length=12, min_length=12) = [
         "Янв", "Фев", "Март", "Апр", "Май", "Июнь", "Июль", "Авг", "Сент", "Окт", "Ноя", "Дек"
     ]
-    cancel_caption: str = Field(default='Cancel', description='Caption for Cancel button')
-    today_caption: str = Field(default='Today', description='Caption for Today button')
+    cancel_caption: str = Field(default='Отмена', description='Caption for Cancel button')
+    today_caption: str = Field(default='Сегодня', description='Caption for Today button')
 
 
 
